@@ -49,7 +49,7 @@ class Sidebar extends React.Component {
   render(){
     return (
       <div className="col-4 sidebar-wrapper my-3">
-        <h2 className="text-center">REGION</h2>
+        <h2 className="text-center my-3">CHOOSE A REGION</h2>
         <ul className="list-group">{this.state.listRegion}</ul>
       </div>
 );

@@ -9,10 +9,10 @@ const Buttons = props => {
       aria-label="..."
     >
       <button onClick={props.handleEndanger} type="button" className="btn">
-        Endanger
+        Endangered Species
       </button>
       <button onClick={props.handleMammals} type="button" className="btn">
-        Mammals
+        Mammals Species
       </button>
     </div>
   );

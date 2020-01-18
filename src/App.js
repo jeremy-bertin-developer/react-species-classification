@@ -16,13 +16,12 @@ let newGroupSpecies = [];
 class App extends React.Component {
   state = {
     listSpecies: "",
-    isEndanger: false,
-    isMammals: false
+    isRegion: false
   };
 
   handleSpecies = identifier => {
     // console.log(identifier);
-
+    newGroupSpecies = [];
     fetch(
       `http://apiv3.iucnredlist.org/api/v3/species/region/${identifier}/page/0?token=9bb4facb6d23f48efbf424bb05c0c1ef1cf6f468393bc745d42179ac4aca5fee`
     )
@@ -30,7 +29,6 @@ class App extends React.Component {
         return response.json();
       })
       .then(data => {
-        newGroupSpecies = [];
         const listSpecies = data.result.map(el => {
           //console.log(el)
 
@@ -64,15 +62,23 @@ class App extends React.Component {
         //console.log(newGroupSpecies)
 
         // console.log(newGroupSpecies);
+        let uList = <ul className="list-group">{listSpecies}</ul>;
 
         this.setState({
-          listSpecies: listSpecies
+          listSpecies: uList,
+          isRegion: true
         });
       });
   };
 
   handleEndanger = () => {
     let endangerSpecies = newGroupSpecies;
+
+    let regionSpecies = newGroupSpecies[0].region;
+    regionSpecies = regionSpecies.replace(/_/g, " ").toUpperCase();
+
+    console.log(regionSpecies);
+
     let newEndangerSpecies = endangerSpecies.map(el => {
       if (el.category === "EN") {
         const NAME = el.name;
@@ -86,14 +92,24 @@ class App extends React.Component {
       }
     });
 
+    let uList = (
+      <>
+        <h2 className="enTitle text-center p-3 m-3">Endangered Species from {regionSpecies}</h2>
+        <ul className="list-group">{newEndangerSpecies}</ul>
+      </>
+    );
+
     this.setState({
-      listSpecies: newEndangerSpecies
+      listSpecies: uList
     });
   };
 
   handleMammals = () => {
     let mammalsSpecies = newGroupSpecies;
     //console.log(mammalsSpecies)
+
+    let regionSpecies = newGroupSpecies[0].region;
+    regionSpecies = regionSpecies.replace(/_/g, " ").toUpperCase();
 
     let newMammalsSpecies = mammalsSpecies.map(el => {
       //console.log(el.class_name)
@@ -106,11 +122,18 @@ class App extends React.Component {
             <li className="text-center">{NAME}</li>
           </>
         );
-      } 
+      }
     });
 
+    let uList = (
+      <>
+        <h2 className="enTitle text-center p-3 m-3">Mammals Species from {regionSpecies}</h2>
+        <ul className="list-group">{newMammalsSpecies}</ul>
+      </>
+    );
+
     this.setState({
-      listSpecies: newMammalsSpecies
+      listSpecies: uList
     });
 
     //console.log(newMammalsSpecies)
@@ -123,11 +146,11 @@ class App extends React.Component {
         <main className="container-fluid">
           <div className="row">
             <div className="col-8 main-wrapper my-3">
-              <Buttons
+              {this.state.isRegion ? <Buttons
                 handleEndanger={this.handleEndanger}
                 handleMammals={this.handleMammals}
-              />
-              <ul className="list-group">{this.state.listSpecies}</ul>
+              /> : ""}
+              {this.state.listSpecies}
             </div>
 
             <Sidebar handleSpecies={this.handleSpecies} />

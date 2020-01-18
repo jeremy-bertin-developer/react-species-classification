@@ -1,3 +1,8 @@
 ul li {
     list-style-type: none;
 }
+
+.enTitle {
+    background-color: #09CAD8;
+    border-radius: 5px;
+}
