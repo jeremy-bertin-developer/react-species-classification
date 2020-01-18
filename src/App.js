@@ -9,11 +9,15 @@ import Header from "./Components/Header/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Buttons from "./Components/Buttons/Buttons";
 import GroupSpecies from "./Library/species";
-import { newGroupSpecies } from "./Library/species";
+// import { newGroupSpecies } from "./Library/species";
+
+let newGroupSpecies = [];
 
 class App extends React.Component {
   state = {
-    listSpecies: ""
+    listSpecies: "",
+    isEndanger: false,
+    isMammals: false
   };
 
   handleSpecies = identifier => {
@@ -26,13 +30,15 @@ class App extends React.Component {
         return response.json();
       })
       .then(data => {
-        const listSpecies = data.result.map((el, index) => {
+        newGroupSpecies = [];
+        const listSpecies = data.result.map(el => {
           //console.log(el)
 
           const NAME = el.scientific_name;
           const ID = el.taxonid;
           const CATEGORY = el.category;
           const CLASS_NAME = el.class_name;
+          el.text = "text";
 
           const speciesPerRegion = new GroupSpecies(
             identifier,
@@ -55,6 +61,8 @@ class App extends React.Component {
           );
         });
 
+        //console.log(newGroupSpecies)
+
         // console.log(newGroupSpecies);
 
         this.setState({
@@ -64,50 +72,48 @@ class App extends React.Component {
   };
 
   handleEndanger = () => {
-
-    const endangerSpecies = newGroupSpecies.map(el => {
-
+    let endangerSpecies = newGroupSpecies;
+    let newEndangerSpecies = endangerSpecies.map(el => {
       if (el.category === "EN") {
         const NAME = el.name;
         //return NAME;
         //console.log(el)
         return (
-            <>
-              <li className="text-center">
-                {NAME}
-              </li>
-            </>
-          );
+          <>
+            <li className="text-center">{NAME}</li>
+          </>
+        );
       }
     });
 
     this.setState({
-      listSpecies: endangerSpecies
+      listSpecies: newEndangerSpecies
     });
   };
 
   handleMammals = () => {
+    let mammalsSpecies = newGroupSpecies;
+    //console.log(mammalsSpecies)
 
-    const mammalsSpecies = newGroupSpecies.map(el => {
-      console.log(el.class_name)
+    let newMammalsSpecies = mammalsSpecies.map(el => {
+      //console.log(el.class_name)
 
       if (el.class_name === "MAMMALIA") {
         const NAME = el.name;
-        //return NAME;
-        // console.log(NAME)
+
         return (
-            <>
-              <li className="text-center">
-                {NAME}
-              </li>
-            </>
-          );
-      }
+          <>
+            <li className="text-center">{NAME}</li>
+          </>
+        );
+      } 
     });
 
     this.setState({
-      listSpecies: mammalsSpecies
+      listSpecies: newMammalsSpecies
     });
+
+    //console.log(newMammalsSpecies)
   };
 
   render() {
@@ -117,9 +123,13 @@ class App extends React.Component {
         <main className="container-fluid">
           <div className="row">
             <div className="col-8 main-wrapper my-3">
-              <Buttons handleEndanger={this.handleEndanger} handleMammals={this.handleMammals}/>
+              <Buttons
+                handleEndanger={this.handleEndanger}
+                handleMammals={this.handleMammals}
+              />
               <ul className="list-group">{this.state.listSpecies}</ul>
             </div>
+
             <Sidebar handleSpecies={this.handleSpecies} />
           </div>
         </main>

@@ -8,7 +8,5 @@ class GroupSpecies {
     }
 }
 
-export const newGroupSpecies = [];
-
 export default GroupSpecies;
 
