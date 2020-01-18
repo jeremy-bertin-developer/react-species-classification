@@ -1,14 +1,14 @@
-import React from 'react';
-
-class Species {
-    constructor(region, name, id, endanger, mammal){
+class GroupSpecies {
+    constructor(region, name, id, category, class_name){
         this.region = region;
         this.name = name;
         this.id = id;
-        this.endanger = endanger;
-        this.mammal = mammal
+        this.category = category;
+        this.class_name = class_name
     }
 }
 
-export default Species;
+export const newGroupSpecies = [];
+
+export default GroupSpecies;
 

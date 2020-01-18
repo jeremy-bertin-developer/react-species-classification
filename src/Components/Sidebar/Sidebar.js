@@ -27,7 +27,7 @@ class Sidebar extends React.Component {
         const listRegion = data.results.map((el, index) => {
           const NAME = el.name;
 
-          let { identifier, id } = this.props
+          let { identifier } = this.props
 
           identifier = el.identifier;
 
@@ -49,6 +49,7 @@ class Sidebar extends React.Component {
   render(){
     return (
       <div className="col-4 sidebar-wrapper my-3">
+        <h2 className="text-center">REGION</h2>
         <ul className="list-group">{this.state.listRegion}</ul>
       </div>
 );
