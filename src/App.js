@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.css";
 // import components
 import Header from "./Components/Header/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
-import Main from "./Components/Main/Main";
+import Species from "./Library/species"
 
 class App extends React.Component {
   state = {
@@ -16,6 +16,7 @@ class App extends React.Component {
 
   handleSpecies = identifier => {
     console.log(identifier);
+    const newGroupSpecies = [];
 
     fetch(
       `http://apiv3.iucnredlist.org/api/v3/species/region/${identifier}/page/0?token=9bb4facb6d23f48efbf424bb05c0c1ef1cf6f468393bc745d42179ac4aca5fee`
@@ -26,18 +27,22 @@ class App extends React.Component {
       .then(data => {
         const listSpecies = data.result.map((el, index) => {
           const NAME = el.scientific_name;
-          const IDENTIFIER = el.identifier;
+          const ID = el.taxonid;
+          const speciesPerRegion = new Species(identifier, NAME, ID, this.endanger = false, this.mammal = false);
+          newGroupSpecies.push(speciesPerRegion)
 
           // console.log(el)
           // console.log(el.name);
           return (
             <>
-              <li key={IDENTIFIER} className="list-group-item text-center">
+              <li key={ID} className="list-group-item text-center">
                 {NAME}
               </li>
             </>
           );
         });
+
+        console.log(newGroupSpecies)
 
         this.setState({
           listSpecies: listSpecies,

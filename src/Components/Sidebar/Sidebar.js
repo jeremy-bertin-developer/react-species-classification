@@ -27,14 +27,14 @@ class Sidebar extends React.Component {
         const listRegion = data.results.map((el, index) => {
           const NAME = el.name;
 
-          let { identifier } = this.props
+          let { identifier, id } = this.props
 
           identifier = el.identifier;
 
           // console.log(el)
           // console.log(el.name);
           return (
-            <li onClick={() => this.handleClick(identifier)} key={identifier} value={identifier} className="list-group-item text-center">
+            <li onClick={() => this.handleClick(identifier)} key={index} value={identifier} className="list-group-item text-center">
                 {NAME}
             </li>
           );
