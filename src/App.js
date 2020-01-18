@@ -62,7 +62,17 @@ class App extends React.Component {
         //console.log(newGroupSpecies)
 
         // console.log(newGroupSpecies);
-        let uList = <ul className="list-group">{listSpecies}</ul>;
+        let regionSpecies = newGroupSpecies[0].region;
+        regionSpecies = regionSpecies.replace(/_/g, " ").toUpperCase();
+
+        let uList = (
+          <>
+            <h2 className="enTitle text-center p-3 m-3">
+              All Species from {regionSpecies}
+            </h2>
+            <ul className="list-group">{listSpecies}</ul>
+          </>
+        );
 
         this.setState({
           listSpecies: uList,
@@ -94,7 +104,9 @@ class App extends React.Component {
 
     let uList = (
       <>
-        <h2 className="enTitle text-center p-3 m-3">Endangered Species from {regionSpecies}</h2>
+        <h2 className="enTitle text-center p-3 m-3">
+          Endangered Species from {regionSpecies}
+        </h2>
         <ul className="list-group">{newEndangerSpecies}</ul>
       </>
     );
@@ -127,7 +139,9 @@ class App extends React.Component {
 
     let uList = (
       <>
-        <h2 className="enTitle text-center p-3 m-3">Mammals Species from {regionSpecies}</h2>
+        <h2 className="enTitle text-center p-3 m-3">
+          Mammals Species from {regionSpecies}
+        </h2>
         <ul className="list-group">{newMammalsSpecies}</ul>
       </>
     );
@@ -146,10 +160,14 @@ class App extends React.Component {
         <main className="container-fluid">
           <div className="row">
             <div className="col-8 main-wrapper my-3">
-              {this.state.isRegion ? <Buttons
-                handleEndanger={this.handleEndanger}
-                handleMammals={this.handleMammals}
-              /> : ""}
+              {this.state.isRegion ? (
+                <Buttons
+                  handleEndanger={this.handleEndanger}
+                  handleMammals={this.handleMammals}
+                />
+              ) : (
+                ""
+              )}
               {this.state.listSpecies}
             </div>
 
