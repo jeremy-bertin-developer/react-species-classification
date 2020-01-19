@@ -1,11 +1,6 @@
 import React from 'react';
 import './Header.css';
 
-// bootstrap
-import 'bootstrap/dist/css/bootstrap.css';
-
-// import components
-
 function Header() {
   return (
     <header className="container-fluid mx-auto">

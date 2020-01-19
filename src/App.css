@@ -6,3 +6,12 @@ ul li {
     background-color: #09CAD8;
     border-radius: 5px;
 }
+
+.btn-group {
+    display: block;
+}
+
+.current {
+    background-color: #09CAD8;
+    color: #f9f9f9;
+}

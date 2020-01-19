@@ -1,11 +1,6 @@
 import React from "react";
 import "./Sidebar.css";
 
-// bootstrap
-import "bootstrap/dist/css/bootstrap.css";
-
-// import components
-
 /* the Sidebar component generating the list of the region */
 class Sidebar extends React.Component {
   /* the state initialise the listRegion */
@@ -29,15 +24,13 @@ class Sidebar extends React.Component {
       .then(data => {
 
         /* create the list by mapping over the datas stored in a variable */
-        const listRegion = data.results.map((el, index) => {
+        const LIST_REGION = data.results.map((el, index) => {
           const NAME = el.name;
 
           let { identifier } = this.props;
 
           identifier = el.identifier;
 
-          // console.log(el)
-          // console.log(el.name);
           return (
             <li
               onClick={() => this.handleClick(identifier)}
@@ -52,7 +45,7 @@ class Sidebar extends React.Component {
 
         /* we attribute finally the state to the variable created just before */
         this.setState({
-          listRegion: listRegion
+          listRegion: LIST_REGION
         });
       });
   }

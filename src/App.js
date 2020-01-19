@@ -10,23 +10,26 @@ import Sidebar from "./Components/Sidebar/Sidebar";
 import Buttons from "./Components/Buttons/Buttons";
 import GroupSpecies from "./Library/species";
 
-/* newGroupSpecies will be the array variable that i will use all over the app to generate and render all the lists */
-let newGroupSpecies = [];
-
 class App extends React.Component {
-  /* listSpecies will render the list of the spcies, all of them per region or by mammals or endangered.
-  isRegion is use for rendering the region name matching with the list on top of the list */
-  state = {
-    listSpecies: "",
-    isRegion: false
-  };
-//__________________________________________________________________________________________________________
+  constructor(props) {
+    super(props);
+    /* listSpecies will render the list of the spcies, all of them per region or by mammals or endangered.
+    isRegion is use for rendering the region name matching with the list on top of the list */
+    this.state = {
+      listSpecies: "",
+      isRegion: false,
+      isClicked: false
+    };
+    /* newGroupSpecies will be the array variable that i will use all over the app to generate and render all the lists */
+    this.newGroupSpecies = [];
+    //this.currentPage = 1;
+  }
+  //__________________________________________________________________________________________________________
 
   /* handleSpecies handle the list of species per region */
   handleSpecies = identifier => {
-    // console.log(identifier);
     /* once the function is clicked  newGroupSpecies is clened up*/
-    newGroupSpecies = [];
+    this.newGroupSpecies = [];
     /* then the API is fetch to get the list of species accordingly to the identifier that was passed from the child component Sidebar */
     fetch(
       `http://apiv3.iucnredlist.org/api/v3/species/region/${identifier}/page/0?token=9bb4facb6d23f48efbf424bb05c0c1ef1cf6f468393bc745d42179ac4aca5fee`
@@ -37,8 +40,7 @@ class App extends React.Component {
       })
       .then(data => {
         /* listSpecies is generating the list by mapping through the data given from the fetch */
-        const listSpecies = data.result.map(el => {
-          //console.log(el)
+        const LIST_SPECIES = data.result.map(el => {
           /* here i store the value that i need into variables */
           const NAME = el.scientific_name;
           const ID = el.taxonid;
@@ -46,7 +48,7 @@ class App extends React.Component {
           const CLASS_NAME = el.class_name;
 
           /* here i create a new object based on the model object */
-          const speciesPerRegion = new GroupSpecies(
+          const SPECIES_PER_REGION = new GroupSpecies(
             identifier,
             NAME,
             ID,
@@ -56,10 +58,7 @@ class App extends React.Component {
 
           /* then i push all those objects into the empty array newGroupSpecies 
           i will need this array of objects to render later on the mammals and the endangered species*/
-          newGroupSpecies.push(speciesPerRegion);
-
-          // console.log(el)
-          // console.log(el.name);
+          this.newGroupSpecies.push(SPECIES_PER_REGION);
           /* return the result of all the species as a list */
           return (
             <>
@@ -69,49 +68,45 @@ class App extends React.Component {
             </>
           );
         });
-
-        // console.log(newGroupSpecies);
         /* here is to get the name of the region that have been clicked and display it on top of the list */
-        let regionSpecies = newGroupSpecies[0].region;
+        let regionSpecies = this.newGroupSpecies[0].region;
         regionSpecies = regionSpecies.replace(/_/g, " ").toUpperCase();
 
         /* creating a variable to render the title of the list and the list itself */
-        let uList = (
+        const ULIST = (
           <>
             <h2 className="enTitle text-center p-3 m-3">
               All Species from {regionSpecies}
             </h2>
-            <ul className="list-group">{listSpecies}</ul>
+            <ul className="list-group">{LIST_SPECIES}</ul>
           </>
         );
 
         /* updating the state for the last render method */
         this.setState({
-          listSpecies: uList,
+          listSpecies: ULIST,
           isRegion: true
         });
       });
   };
 
-//__________________________________________________________________________________________________________
+  //__________________________________________________________________________________________________________
 
   /* handleEndanger will handle the endangered list from the region */
   handleEndanger = () => {
     /* once the whole list have been generated, i associate that list to a new variable. 
     because  newGroupSpecies will be cleaned up awhen we will click on a new region*/
-    let endangerSpecies = newGroupSpecies;
+    const ENDANGER_SPECIES = this.newGroupSpecies;
 
     /* getting the name of the region for the title */
-    let regionSpecies = newGroupSpecies[0].region;
+    let regionSpecies = this.newGroupSpecies[0].region;
     regionSpecies = regionSpecies.replace(/_/g, " ").toUpperCase();
 
-    console.log(regionSpecies);
-
     /* mapping over the array and filter the category to get only the endangered species */
-    let newEndangerSpecies = endangerSpecies.map(el => {
+    const NEW_ENDANGER_SPECIES = ENDANGER_SPECIES.map(el => {
       if (el.category === "EN") {
         const NAME = el.name;
-        //console.log(el)
+
         /* return as list item */
         return (
           <>
@@ -122,12 +117,12 @@ class App extends React.Component {
     });
 
     /* generating a new variable to store the title and the list */
-    let uList = (
+    const uList = (
       <>
         <h2 className="enTitle text-center p-3 m-3">
           Endangered Species from {regionSpecies}
         </h2>
-        <ul className="list-group">{newEndangerSpecies}</ul>
+        <ul className="list-group">{NEW_ENDANGER_SPECIES}</ul>
       </>
     );
 
@@ -137,19 +132,16 @@ class App extends React.Component {
     });
   };
 
-//__________________________________________________________________________________________________________
+  //__________________________________________________________________________________________________________
 
   /* handleMammals does of course the same thing as handleEndanger */
   handleMammals = () => {
-    let mammalsSpecies = newGroupSpecies;
-    //console.log(mammalsSpecies)
+    const MAMMALS_SPECIES = this.newGroupSpecies;
 
-    let regionSpecies = newGroupSpecies[0].region;
+    let regionSpecies = this.newGroupSpecies[0].region;
     regionSpecies = regionSpecies.replace(/_/g, " ").toUpperCase();
 
-    let newMammalsSpecies = mammalsSpecies.map(el => {
-      //console.log(el.class_name)
-
+    const NEW_MAMMALS_SPECIES = MAMMALS_SPECIES.map(el => {
       if (el.class_name === "MAMMALIA") {
         const NAME = el.name;
 
@@ -166,20 +158,18 @@ class App extends React.Component {
         <h2 className="enTitle text-center p-3 m-3">
           Mammals Species from {regionSpecies}
         </h2>
-        <ul className="list-group">{newMammalsSpecies}</ul>
+        <ul className="list-group">{NEW_MAMMALS_SPECIES}</ul>
       </>
     );
 
     this.setState({
       listSpecies: uList
     });
-
-    //console.log(newMammalsSpecies)
   };
 
-//__________________________________________________________________________________________________________
+  //__________________________________________________________________________________________________________
 
-/* then render the whole app */
+  /* then render the whole app */
   render() {
     return (
       <>

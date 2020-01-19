@@ -1,10 +1,14 @@
 .btn {
-    transition: 0.3s ease-in-out;
-    border: 2px solid #09CAD8 !important;
-  }
-  
-  .btn:hover {
-    background-color: #09CAD8;
-    transition: 0.3s ease-in-out;
-    cursor: pointer
-  }
+  transition: 0.3s ease-in-out;
+  border: 2px solid #09cad8 !important;
+}
+
+.btn:hover {
+  background-color: #09cad8;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-group {
+  display: block;
+}
