@@ -1,6 +1,7 @@
 import React from "react";
-import './Buttons.css';
+import "./Buttons.css";
 
+/* the Buttons component generate two buttons that have the function to render the endanger list or the mammals list */
 const Buttons = props => {
   return (
     <div
