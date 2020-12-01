@@ -22,7 +22,6 @@ class App extends React.Component {
     };
     /* newGroupSpecies will be the array variable that i will use all over the app to generate and render all the lists */
     this.newGroupSpecies = [];
-    //this.currentPage = 1;
   }
   //__________________________________________________________________________________________________________
 
